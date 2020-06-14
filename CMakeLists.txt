@@ -25,6 +25,7 @@ endif()
 # Fixes build on older gcc, Debian Jessie
 if(KS_PLAT_LIN)
 	set(CMAKE_C_STANDARD 99)
+	include(GNUInstallDirs)
 endif()
 
 if (KS_PLAT_WIN OR WITH_KS_TEST)
@@ -58,7 +59,7 @@ endif()
 # us to run the apps from the build dir without installing (come install time
 # the binary is re-linked with an rpath matching that of the install prefix)
 set(SKIP_BUILD_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
 # Now detect a bunch of platform stuff
 include(CheckFunctionExists)
@@ -94,6 +95,10 @@ if(KS_PLAT_LIN)
 		PATHS /etc
 	)
 
+	find_file(CENTOS_FOUND redhat-release
+		PATHS /etc
+	)
+
 	if(DEBIAN_FOUND)
 		set(CMAKE_OS_NAME "Debian" CACHE STRING "Operating system name" FORCE)
 	endif()
@@ -105,6 +110,10 @@ endif()
 
 # Centos packaging
 if("${CMAKE_OS_NAME}" STREQUAL "Centos")
+
+	# Install shared libraries to /usr/lib64
+	set(CMAKE_INSTALL_LIBDIR lib64 CACHE PATH "Library installation location" FORCE)
+	set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
 	# Enable component install
 	set(CPACK_RPM_COMPONENT_INSTALL ON)
@@ -560,7 +569,7 @@ export(TARGETS ks2
 if (NOT KS_PLAT_WIN)
 
 	# Set install targets
-	install(TARGETS ks2 COMPONENT "runtime" EXPORT LibKS2Config DESTINATION lib)
+	install(TARGETS ks2 COMPONENT "runtime" EXPORT LibKS2Config DESTINATION ${CMAKE_INSTALL_LIBDIR})
 	install(DIRECTORY src/include/libks COMPONENT "runtime" DESTINATION include/libks2 PATTERN src/include/libks/internal EXCLUDE)
 
 	# Set path for pkg-config based on ARCH and distro type
