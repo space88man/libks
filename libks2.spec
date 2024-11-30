@@ -48,5 +48,5 @@ make %{?_smp_mflags}
 
 
 %changelog
-* Sat Nov 30 2024 S-P Chan
+* Sat Nov 30 2024 S-P Chan 2.0.6-1
 - initial packaging
