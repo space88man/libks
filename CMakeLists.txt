@@ -113,7 +113,8 @@ if("${CMAKE_OS_NAME}" STREQUAL "Centos")
 
 	# Install shared libraries to /usr/lib64
 	set(CMAKE_INSTALL_LIBDIR lib64 CACHE PATH "Library installation location" FORCE)
-	set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    # set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    unset(CMAKE_INSTALL_RPATH)
 
 	# Enable component install
 	set(CPACK_RPM_COMPONENT_INSTALL ON)
