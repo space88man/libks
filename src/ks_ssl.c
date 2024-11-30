@@ -164,7 +164,7 @@ KS_DECLARE(int) ks_gen_cert(const char *dir, const char *file)
 	X509_free(x509);
 	EVP_PKEY_free(pkey);
 
-#ifndef OPENSSL_NO_ENGINE
+#if !defined(OPENSSL_NO_ENGINE) && OPENSSL_VERSION_NUMBER < 0x10100000L
 	ENGINE_cleanup();
 #endif
 	CRYPTO_cleanup_all_ex_data();

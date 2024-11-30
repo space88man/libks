@@ -23,8 +23,11 @@
 #pragma once
 
 #include <openssl/ssl.h>
+#if OPENSSL_VERSION_NUMBER < 0x03000000L
 #include <openssl/engine.h>
+#endif
 #include <openssl/x509v3.h>
+#include <openssl/err.h>
 
 KS_BEGIN_EXTERN_C
 
